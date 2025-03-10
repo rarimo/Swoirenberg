@@ -1,5 +1,15 @@
+use std::default;
+
 use noir_rs::{
-    barretenberg::{prove::prove_ultra_honk, srs::setup_srs, verify::verify_ultra_honk}, execute::execute, native_types::{Witness, WitnessMap}, AcirField, FieldElement
+    barretenberg::{
+        prove::{prove_ultra_honk, prove_ultra_plonk},
+        srs::setup_srs,
+        verify::verify_ultra_honk
+    },
+    execute::execute,
+    native_types::{Witness, WitnessMap},
+    AcirField,
+    FieldElement
 };
 
 // Expose functions using FFI and swift-bridge so we can call them in Swift
@@ -61,6 +71,13 @@ pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof
 
     if proof_type == "honk" {
         let (proof, vkey) = prove_ultra_honk(&circuit_bytecode, initial_witness, recursive).ok()?;
+        return Some(Proof {
+            proof,
+            vkey,
+        });
+    } else if proof_type == "plonk" {
+        let (proof, vkey) = prove_ultra_plonk(&circuit_bytecode, initial_witness, recursive).ok()?;
+
         return Some(Proof {
             proof,
             vkey,
