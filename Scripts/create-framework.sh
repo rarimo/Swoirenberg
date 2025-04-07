@@ -93,9 +93,9 @@ function create_framework() {
         "${fw_paths[@]}" \
         -output "Frameworks/$XCFWNAME.xcframework"
 
-    create_empty_framework "ios-arm64-simulator"
-    rm Frameworks/$XCFWNAME.xcframework/Info.plist
-    cp templateInfo.plist Frameworks/$XCFWNAME.xcframework/Info.plist
+    # create_empty_framework "ios-arm64-simulator"
+    # rm Frameworks/$XCFWNAME.xcframework/Info.plist
+    # cp templateInfo.plist Frameworks/$XCFWNAME.xcframework/Info.plist
 
     # Set the SIGNING_IDENTITY environment variable to enable signing of the framework
     # It's the name of the certificate you want to use to sign the framework
