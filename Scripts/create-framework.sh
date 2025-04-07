@@ -44,8 +44,7 @@ function create_empty_framework() {
     echo "</plist>"
     } > "$FRAMEWORK_PATH/Info.plist"
 
-    # Create a universal binary for ios-arm64-simulator
-    echo "int main() { return 0; }" | clang -x c -arch arm64 - -o "$FRAMEWORK_PATH/$FWNAME"
+    cp  Frameworks/$XCFWNAME.xcframework/ios-arm64/$FWNAME.framework/$FWNAME "$FRAMEWORK_PATH/$FWNAME"
 }
 
 function create_framework() {
