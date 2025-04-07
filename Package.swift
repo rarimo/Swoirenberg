@@ -22,7 +22,7 @@ let package = Package(
         .binaryTarget(
             name: "SwoirenbergFramework",
             url: "https://github.com/rarimo/Swoirenberg/releases/download/v1.0.1/Swoirenberg.xcframework.zip",
-            checksum: "b0e2efb6e05c64729114c2e580c79d7f5379ca1307a9ab7f4d9319c8eb29cf41"),
+            checksum: "5f7f1cf1a5044d0300b8220c887ed92a63561f8110e6b400a4f1d585f6db6179"),
         .testTarget(
             name: "SwoirenbergTests",
             dependencies: ["Swoirenberg"],
