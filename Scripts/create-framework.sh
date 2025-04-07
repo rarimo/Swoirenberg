@@ -42,7 +42,7 @@ function create_empty_framework() {
     echo "    <string>15.0</string>"
     echo "</dict>"
     echo "</plist>"
-    } > ".artifacts/Frameworks/$fw/$FWNAME.framework/Info.plist"
+    } > "$FRAMEWORK_PATH/Info.plist"
 
     # Create a universal binary for ios-arm64-simulator
     echo "int main() { return 0; }" | clang -x c -arch arm64 - -o "$FRAMEWORK_PATH/$FWNAME"
