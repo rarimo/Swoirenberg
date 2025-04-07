@@ -44,7 +44,8 @@ function create_empty_framework() {
     echo "</plist>"
     } > "$FRAMEWORK_PATH/Info.plist"
 
-    cp  Frameworks/$XCFWNAME.xcframework/ios-arm64/$FWNAME.framework/$FWNAME "$FRAMEWORK_PATH/$FWNAME"
+    # Create a universal binary for ios-arm64-simulator
+    cp EmptyRust/target/aarch64-apple-ios-sim/release/libswoirenberg.a $FRAMEWORK_PATH/SwoirenbergLib
 }
 
 function create_framework() {
@@ -93,9 +94,9 @@ function create_framework() {
         "${fw_paths[@]}" \
         -output "Frameworks/$XCFWNAME.xcframework"
 
-    # create_empty_framework "ios-arm64-simulator"
-    # rm Frameworks/$XCFWNAME.xcframework/Info.plist
-    # cp templateInfo.plist Frameworks/$XCFWNAME.xcframework/Info.plist
+    create_empty_framework "ios-arm64-simulator"
+    rm Frameworks/$XCFWNAME.xcframework/Info.plist
+    cp templateInfo.plist Frameworks/$XCFWNAME.xcframework/Info.plist
 
     # Set the SIGNING_IDENTITY environment variable to enable signing of the framework
     # It's the name of the certificate you want to use to sign the framework
