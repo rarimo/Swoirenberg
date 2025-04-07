@@ -2,7 +2,6 @@ import Foundation
 import SwoirCore
 
 public class Swoirenberg: SwoirBackendProtocol {
-
     public static func setup_srs(bytecode: Data, srs_path: String? = nil, recursive: Bool = false) throws -> UInt32 {
         if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
         let bytecodeBase64 = bytecode.base64EncodedString()
@@ -16,7 +15,7 @@ public class Swoirenberg: SwoirBackendProtocol {
         if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
         if witnessMap.isEmpty { throw SwoirBackendError.emptyWitnessMap }
         let bytecodeBase64 = bytecode.base64EncodedString()
-        let witnessMapRustVec = RustVec<RustString>.init()
+        let witnessMapRustVec = RustVec<RustString>()
         for witness in witnessMap {
             witnessMapRustVec.push(value: witness.intoRustString())
         }
@@ -28,6 +27,20 @@ public class Swoirenberg: SwoirBackendProtocol {
             proof: Data(bytes: proofResult.proof_data_ptr(), count: Int(proofResult.proof_data_len())),
             vkey: Data(bytes: proofResult.vkey_data_ptr(), count: Int(proofResult.vkey_data_len())))
         return proof
+    }
+
+    public static func get_verification_key(bytecode: Data) throws -> Data {
+        if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
+
+        let bytecodeBase64 = bytecode.base64EncodedString()
+
+        guard let keyResult = get_verification_key_swift(bytecodeBase64.intoRustString()) else {
+            throw SwoirBackendError.errorProving("Error generating verification key")
+        }
+
+        let verificationKey = Data(bytes: keyResult.ptr, count: keyResult.len())
+
+        return verificationKey
     }
 
     public static func verify(proof: SwoirCore.Proof, proof_type: String) throws -> Bool {
@@ -42,7 +55,7 @@ public class Swoirenberg: SwoirBackendProtocol {
         if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
         if witnessMap.isEmpty { throw SwoirBackendError.emptyWitnessMap }
         let bytecodeBase64 = bytecode.base64EncodedString()
-        let witnessMapRustVec = RustVec<RustString>.init()
+        let witnessMapRustVec = RustVec<RustString>()
         for witness in witnessMap {
             witnessMapRustVec.push(value: witness.intoRustString())
         }

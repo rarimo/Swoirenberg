@@ -5,6 +5,49 @@ set -e
 XCFWNAME="Swoirenberg"
 FWNAME="SwoirenbergLib"
 
+function create_empty_framework() {
+    local FRAMEWORK_PATH="Frameworks/$XCFWNAME.xcframework/$1"
+    rm -rf "$FRAMEWORK_PATH"
+    mkdir -p "$FRAMEWORK_PATH/Headers"
+    mkdir -p "$FRAMEWORK_PATH/Modules"
+
+    # Create an empty umbrella header
+    echo "// Empty umbrella header for $FWNAME" > "$FRAMEWORK_PATH/Headers/$FWNAME.h"
+
+    # Create a minimal modulemap
+    {
+    echo "framework module $FWNAME {"
+    echo "    umbrella header \"$FWNAME.h\""
+    echo "    export *"
+    echo "    module * { export * }"
+    echo "}"
+    } > "$FRAMEWORK_PATH/Modules/module.modulemap"
+
+    {
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+    echo "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">"
+    echo "<plist version=\"1.0\">"
+    echo "<dict>"
+    echo "    <key>CFBundlePackageType</key>"
+    echo "    <string>FMWK</string>"
+    echo "    <key>CFBundleIdentifier</key>"
+    echo "    <string>com.swoirenberg.$FWNAME</string>"
+    echo "    <key>CFBundleExecutable</key>"
+    echo "    <string>$FWNAME</string>"
+    echo "    <key>CFBundleShortVersionString</key>"
+    echo "    <string>1.0.0</string>"
+    echo "    <key>CFBundleVersion</key>"
+    echo "    <string>3</string>"
+    echo "    <key>MinimumOSVersion</key>"
+    echo "    <string>15.0</string>"
+    echo "</dict>"
+    echo "</plist>"
+    } > ".artifacts/Frameworks/$fw/$FWNAME.framework/Info.plist"
+
+    # Create a universal binary for ios-arm64-simulator
+    echo "int main() { return 0; }" | clang -x c -arch arm64 - -o "$FRAMEWORK_PATH/$FWNAME"
+}
+
 function create_framework() {
     for fw in "$@"; do
         copy_framework_files "${fw}"
@@ -50,6 +93,10 @@ function create_framework() {
     xcrun xcodebuild -create-xcframework \
         "${fw_paths[@]}" \
         -output "Frameworks/$XCFWNAME.xcframework"
+
+    create_empty_framework "ios-arm64-simulator"
+    rm Frameworks/$XCFWNAME.xcframework/Info.plist
+    cp templateInfo.plist Frameworks/$XCFWNAME.xcframework/Info.plist
 
     # Set the SIGNING_IDENTITY environment variable to enable signing of the framework
     # It's the name of the certificate you want to use to sign the framework

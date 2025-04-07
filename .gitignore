@@ -5,6 +5,7 @@ target/
 .artifacts/
 .res/
 Frameworks/
+.swiftpm
 
 # Ignored files
 **/*.rs.bk
