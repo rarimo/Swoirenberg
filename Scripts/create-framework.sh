@@ -6,7 +6,7 @@ XCFWNAME="Swoirenberg"
 FWNAME="SwoirenbergLib"
 
 function create_empty_framework() {
-    local FRAMEWORK_PATH="Frameworks/$XCFWNAME.xcframework/$1"
+    local FRAMEWORK_PATH="Frameworks/$XCFWNAME.xcframework/$1/$FWNAME.framework"
     rm -rf "$FRAMEWORK_PATH"
     mkdir -p "$FRAMEWORK_PATH/Headers"
     mkdir -p "$FRAMEWORK_PATH/Modules"
