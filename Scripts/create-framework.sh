@@ -39,7 +39,7 @@ function create_empty_framework() {
     echo "    <key>CFBundleVersion</key>"
     echo "    <string>3</string>"
     echo "    <key>MinimumOSVersion</key>"
-    echo "    <string>15.0</string>"
+    echo "    <string>100</string>"
     echo "</dict>"
     echo "</plist>"
     } > "$FRAMEWORK_PATH/Info.plist"
@@ -78,7 +78,7 @@ function create_framework() {
         echo "    <string>3</string>"
         if [ "$fw" = "aarch64-apple-ios" ]; then
             echo "    <key>MinimumOSVersion</key>"
-            echo "    <string>15.0</string>"
+            echo "    <string>100</string>"
         fi
         if [ "$fw" = "macos-arm64" ]; then
             echo "    <key>MinimumOSVersion</key>"
