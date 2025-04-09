@@ -130,7 +130,7 @@ function copy_framework_files() {
 }
 
 # Strip debug symbols to reduce module size
-strip -x Rust/target/aarch64-apple-darwin/release/libswoirenberg.a Rust/target/aarch64-apple-ios/release/libswoirenberg.a
+# strip -x Rust/target/aarch64-apple-darwin/release/libswoirenberg.a Rust/target/aarch64-apple-ios/release/libswoirenberg.a
 
 # Create universal arm64 module
 mkdir -p Rust/target/macos-arm64/release
