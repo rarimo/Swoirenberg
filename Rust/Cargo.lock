@@ -1732,7 +1732,7 @@ dependencies = [
 [[package]]
 name = "noir_rs"
 version = "1.0.0-beta.1"
-source = "git+https://github.com/rarimo/noir_rs.git?branch=v1.0.2#253c2198908bc25623e5a54ed3f34e0cfdec342f"
+source = "git+https://github.com/rarimo/noir_rs.git?branch=v1.0.3#30a017c1754bbf02c49bfa490dff5d5f685b3c5d"
 dependencies = [
  "acir",
  "acvm",
