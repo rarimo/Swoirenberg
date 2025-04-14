@@ -2852,6 +2852,7 @@ dependencies = [
 name = "swoirenberg"
 version = "1.0.0-beta.3-2"
 dependencies = [
+ "hex",
  "noir_rs",
  "regex",
  "serde",

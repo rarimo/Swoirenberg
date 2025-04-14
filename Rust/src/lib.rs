@@ -1,5 +1,3 @@
-use std::default;
-
 use noir_rs::{
     barretenberg::{
         prove::{get_verification, prove_ultra_honk, prove_ultra_plonk},
@@ -172,7 +170,34 @@ pub fn execute_swift(
     let witness_vec = witness_map
         .clone()
         .into_iter()
-        .map(|(i, val)| format!("0x{}", val.to_hex()))
+        .map(|(_, val)| format!("0x{}", val.to_hex()))
         .collect();
     Some(witness_vec)
+}
+
+mod tests {
+    use std::{fs::File, io::Read};
+
+    #[derive(serde::Deserialize)]
+    struct Circuit {
+        bytecode: String,
+    }
+
+    #[test]
+    fn test_get_verification_key() {
+        let trusted_setup_path = "assets/ultraPlonkTrustedSetup.dat";
+
+        let mut circuit_json_file = File::open("assets/testCircuit.json").unwrap();
+
+        let mut circuit_json = String::new();
+        circuit_json_file.read_to_string(&mut circuit_json).unwrap();
+
+        let circuit: Circuit = serde_json::from_str(&circuit_json).unwrap();
+
+        super::setup_srs_swift(circuit.bytecode.clone(), Some(trusted_setup_path), false).unwrap();
+
+        let vk = super::get_verification_key_swift(circuit.bytecode).unwrap();
+
+        println!("Verification Key: {:?}", hex::encode(vk));
+    }
 }
