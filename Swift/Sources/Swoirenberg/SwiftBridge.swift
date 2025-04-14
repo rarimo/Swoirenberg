@@ -8,8 +8,8 @@ public func setup_srs_swift<GenericIntoRustString: IntoRustString, GenericToRust
 public func prove_swift<GenericIntoRustString: IntoRustString>(_ circuit_bytecode: GenericIntoRustString, _ initial_witness: RustVec<GenericIntoRustString>, _ proof_type: GenericIntoRustString, _ recursive: Bool) -> Optional<Proof> {
     { let val = __swift_bridge__$prove_swift({ let rustString = circuit_bytecode.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), { let val = initial_witness; val.isOwned = false; return val.ptr }(), { let rustString = proof_type.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), recursive); if val != nil { return Proof(ptr: val!) } else { return nil } }()
 }
-public func get_verification_key_swift<GenericIntoRustString: IntoRustString>(_ circuit_bytecode: GenericIntoRustString) -> Optional<RustVec<UInt8>> {
-    { let val = __swift_bridge__$get_verification_key_swift({ let rustString = circuit_bytecode.intoRustString(); rustString.isOwned = false; return rustString.ptr }()); if val != nil { return RustVec(ptr: val!) } else { return nil } }()
+public func get_verification_key_swift<GenericIntoRustString: IntoRustString>(_ circuit_bytecode: GenericIntoRustString) -> Optional<RustString> {
+    { let val = __swift_bridge__$get_verification_key_swift({ let rustString = circuit_bytecode.intoRustString(); rustString.isOwned = false; return rustString.ptr }()); if val != nil { return RustString(ptr: val!) } else { return nil } }()
 }
 public func verify_swift<GenericIntoRustString: IntoRustString>(_ proof: RustVec<UInt8>, _ vkey: RustVec<UInt8>, _ proof_type: GenericIntoRustString) -> Optional<Bool> {
     __swift_bridge__$verify_swift({ let val = proof; val.isOwned = false; return val.ptr }(), { let val = vkey; val.isOwned = false; return val.ptr }(), { let rustString = proof_type.intoRustString(); rustString.isOwned = false; return rustString.ptr }()).intoSwiftRepr()

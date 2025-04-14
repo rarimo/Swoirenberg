@@ -25,7 +25,7 @@ mod ffi {
             proof_type: String,
             recursive: bool,
         ) -> Option<Proof>;
-        fn get_verification_key_swift(circuit_bytecode: String) -> Option<Vec<u8>>;
+        fn get_verification_key_swift(circuit_bytecode: String) -> Option<String>;
         fn verify_swift(proof: Vec<u8>, vkey: Vec<u8>, proof_type: String) -> Option<bool>;
         fn execute_swift(
             circuit_bytecode: String,
@@ -98,8 +98,11 @@ pub fn prove_swift(
     }
 }
 
-pub fn get_verification_key_swift(circuit_bytecode: String) -> Option<Vec<u8>> {
-    get_verification(&circuit_bytecode).ok()
+pub fn get_verification_key_swift(circuit_bytecode: String) -> Option<String> {
+    match get_verification(&circuit_bytecode) {
+        Ok(vkey) => Some(hex::encode(vkey)),
+        Err(_) => None,
+    }
 }
 
 /// Verifies a given zkSNARK proof using the associated circuit bytecode and verification key.
@@ -175,6 +178,7 @@ pub fn execute_swift(
     Some(witness_vec)
 }
 
+#[cfg(test)]
 mod tests {
     use std::{fs::File, io::Read};
 
