@@ -40,7 +40,7 @@ public class Swoirenberg: SwoirBackendProtocol {
         #endif
     }
 
-    public static func get_verification_key(bytecode: Data) throws -> Data {
+    public static func get_verification_key(bytecode: Data) throws -> String {
         #if targetEnvironment(simulator)
         throw SwoirBackendError.errorExecuting("simulator")
         #else
@@ -53,9 +53,7 @@ public class Swoirenberg: SwoirBackendProtocol {
             throw SwoirBackendError.errorProving("Error generating verification key")
         }
 
-        let verificationKey = Data(bytes: keyResult.ptr, count: keyResult.len())
-
-        return verificationKey
+        return keyResult.as_str().toString()
 
         #endif
     }
